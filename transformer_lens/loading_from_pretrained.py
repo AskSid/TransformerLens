@@ -547,7 +547,7 @@ MODEL_ALIASES = {
     "llama-13b-hf": ["llama-13b"],
     "llama-30b-hf": ["llama-30b"],
     "llama-65b-hf": ["llama-65b"],
-    "meta-llama/Llama-2-7b-hf": ["Llama-2-7b", "meta-llama/Llama-2-7b-hf"],
+    "meta-llama/Llama-2-7b-hf": ["Llama-2-7b", "meta-llama/Llama-2-7b-hf", "Llama-2-7b-LLaVA"],
     "meta-llama/Llama-2-7b-chat-hf": [
         "Llama-2-7b-chat",
         "meta-llama/Llama-2-7b-chat-hf",
@@ -742,7 +742,7 @@ def convert_hf_model_config(model_name: str, **kwargs):
             "n_layers": 32,
             "n_ctx": 2048 if official_model_name.startswith("llama-7b") else 4096,
             "eps": 1e-6 if official_model_name.startswith("llama-7b") else 1e-5,
-            "d_vocab": 32000,
+            "d_vocab": 32064,
             "act_fn": "silu",
             "normalization_type": "RMS",
             "positional_embedding_type": "rotary",
@@ -1448,7 +1448,7 @@ def get_pretrained_model_config(
                 f"Loading model {official_model_name} requires setting trust_remote_code=True"
             )
             kwargs["trust_remote_code"] = True
-        cfg_dict = convert_hf_model_config(official_model_name, **kwargs)
+        cfg_dict = convert_hf_model_config(model_name, **kwargs)
     # Processing common to both model types
     # Remove any prefix, saying the organization who made a model.
     cfg_dict["model_name"] = official_model_name.split("/")[-1]

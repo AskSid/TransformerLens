@@ -135,6 +135,8 @@ def generic_activation_patch(
     index_axis_names: Optional[Sequence[AxisNames]] = None,
     index_df: Optional[pd.DataFrame] = None,
     return_index_df: bool = False,
+    *model_args: Any,
+    **model_kwargs: Any
 ) -> Union[torch.Tensor, Tuple[torch.Tensor, pd.DataFrame]]:
     """
     A generic function to do activation patching, will be specialised to specific use cases.
@@ -216,7 +218,7 @@ def generic_activation_patch(
 
         # Run the model with the patching hook and get the logits!
         patched_logits = model.run_with_hooks(
-            corrupted_tokens, fwd_hooks=[(current_activation_name, current_hook)]
+            corrupted_tokens, fwd_hooks=[(current_activation_name, current_hook)], *model_args, **model_kwargs
         )
 
         # Calculate the patching metric and store
